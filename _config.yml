@@ -1,0 +1,15 @@
+name: The Max
+description: Data Science (and maybe some other stuff)
+meta_description: "Max Flander Data Science (and maybe some other stuff)"
+
+markdown: redcarpet
+highlighter: rouge
+logo: true
+paginate: 15
+baseurl: /
+domain_name: 'themrmax.github.io'
+google_analytics: 'UA-XXXXXXXX-X'
+
+# Details for the RSS feed generator
+url:            'http://themrmax.github.io'
+author:         'Max Flander'

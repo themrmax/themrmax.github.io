@@ -34,7 +34,7 @@ try:
     wn = WordNetCorpusReader(nltk.data.find('wordnet-flat.zip'))
     wnl = WordNetLemmatizer()
     for line in sys.stdin:
-        line = line.strip().split(\t)
+        line = line.strip().split('\t')
         lemmatized = ' '.join([wnl.lemmatize(w) for w in line[1].split(' ')])
         print line[0] +'\t' + lemmatized
 except:

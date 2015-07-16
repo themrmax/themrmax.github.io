@@ -11,60 +11,62 @@ Custom UDFs in Hive
 -------------------
 In Hive, UDF's are normally written in Java and imported as JAR files. Unfortunately I have so far sucessfully resisted learning it (or any C-like languate), but luckily Hive can run any executible as a custom UDF, via the `TRANSFORM` method, implemented using Hadoop Streaming so I can write my UDF in Python. The syntax for my job is very simple, I think it's possible to input and output multiple columns, but I didn't worry about this. The table `documents` contains one document per line, the the lemmatizer simple reads lines in from `stdin` and prints them to `stdout`.
 
-    ADD FILE  ./lemmatizer.py;
-    SELECT
-    TRANSFORM (id, text)
-    USING 'python lemmatizer.py' AS (id, text)
-    FROM
-    documents;
-
+```SQL
+ADD FILE  ./lemmatizer.py;
+SELECT
+TRANSFORM (id, text)
+USING 'python lemmatizer.py' AS (id, text)
+FROM
+documents;
+```
 And here is the code for my lemmatizer, (I followed [these instructions][1] from stackoverflow for using `zipimport` to import a library from a zipfile):
 
-
-    import sys
-    try:
-        import zipimport
-        importer = zipimport.zipimporter('/home/hadoop/nltkandyaml.mod')
-        nltk = importer.load_module('nltk')
-        from nltk.corpus import wordnet
-        from nltk.corpus.reader import WordNetCorpusReader
-        from nltk.stem import WordNetLemmatizer
-        nltk.data.path += ["home/hadoop/lib","."]
-        wn = WordNetCorpusReader(nltk.data.find('wordnet-flat.zip'))
-        wnl = WordNetLemmatizer()
-        for line in sys.stdin:
-            line = line.strip().split(\t)
-            lemmatized = ' '.join([wnl.lemmatize(w) for w in line[1].split(' ')])
-            print line[0] +'\t' + lemmatized
-    except:
-       #In case of an exception, write the stack trace to stdout so that we
-       #can see it in Hive, in the results of the UDF call.
-       print sys.exc_info()
-
+```python
+import sys
+try:
+    import zipimport
+    importer = zipimport.zipimporter('/home/hadoop/nltkandyaml.mod')
+    nltk = importer.load_module('nltk')
+    from nltk.corpus import wordnet
+    from nltk.corpus.reader import WordNetCorpusReader
+    from nltk.stem import WordNetLemmatizer
+    nltk.data.path += ["home/hadoop/lib","."]
+    wn = WordNetCorpusReader(nltk.data.find('wordnet-flat.zip'))
+    wnl = WordNetLemmatizer()
+    for line in sys.stdin:
+        line = line.strip().split('\t')
+        lemmatized = ' '.join([wnl.lemmatize(w) for w in line[1].split(' ')])
+        print line[0] +'\t' + lemmatized
+except:
+   #In case of an exception, write the stack trace to stdout so that we
+   #can see it in Hive, in the results of the UDF call.
+   print sys.exc_info()
+```
 Setting up the secondary nodes
 ----------------------------
 
 The main challenge in getting it to run was getting the the Python script to find the NLTK Wordnet data files when it ran on the secondary nodes.  Each node on the EMR comes preinstalled with a vanilla Python 2.7 installation, and I can send libraries with the UDF using the `zipimport` method, but any more involved set-up tasks aren't supported by the HIVE TRANSORM API (for example the way you can pass multiple `-file` arguments to `hadoop-streaming.jar`). Initially I tried to make the script download the files with `nltk.download`, but couldn't get this to work, I think due to to it echoing logging lines to stdout, which were getting picked up by Hive.
 
 In the end, I wrote a Bash script to download the files from S3 and then `scp` them to all of the Secondary nodes, and them unzip them over `ssh`. A couple notes about the script:
- - the line `-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no` is a [trick I found on Linux Commando][2] to suppress the SSH host key checking promt
-  - the script downloads my SSH key from s3 which isn't stored anywhere on the Primary node as far as I know ... not sure if this is best-practice security-wise?!
+ - the line `-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no` is a [trick I found on Linux Commando][2] to suppress the SSH host key checking prompt
+ - the script downloads my SSH key from s3 which isn't stored anywhere on the Primary node as far as I know ... not sure if this is best-practice security-wise?!
 
+```bash
+aws s3 cp s3://max-emr/scripts/wordnet.zip ./wordnet.zip
+aws s3 cp s3://max-emr/scripts/nltkandyaml.mod ./nltkandyaml.mod
+aws s3 cp s3://max-emr/Key.pem ./Key.pem
 
-    aws s3 cp s3://max-emr/scripts/wordnet.zip ./wordnet.zip
-    aws s3 cp s3://max-emr/scripts/nltkandyaml.mod ./nltkandyaml.mod
-    aws s3 cp s3://max-emr/Key.pem ./Key.pem
-
-    nodes=(`hadoop dfsadmin -report | grep Hostname | sed 's/Hostname: //'`)
-    for workerurl in "${nodes[@]}"
-    do
-        echo "Copying to worker node: $item"
-        ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "mkdir /home/hadoop/lib/corpora"
-        ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "mkdir /home/hadoop/lib/corpora/wordnet/"
-        scp -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /home/hadoop/wordnet.zip $workerurl:/home/hadoop/lib/corpora/wordnet/wordnet.zip
-        ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "cd /home/hadoop/lib/corpora/wordnet/ && unzip wordnetflat.zip"
-        scp -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /home/hadoop/nltkandyaml.mod  $workerurl:/home/hadoop/nltkandyaml.mod
-    done
+nodes=(`hadoop dfsadmin -report | grep Hostname | sed 's/Hostname: //'`)
+for workerurl in "${nodes[@]}"
+do
+    echo "Copying to worker node: $item"
+    ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "mkdir /home/hadoop/lib/corpora"
+    ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "mkdir /home/hadoop/lib/corpora/wordnet/"
+    scp -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /home/hadoop/wordnet.zip $workerurl:/home/hadoop/lib/corpora/wordnet/wordnet.zip
+    ssh -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $workerurl "cd /home/hadoop/lib/corpora/wordnet/ && unzip wordnetflat.zip"
+    scp -i Key.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no /home/hadoop/nltkandyaml.mod  $workerurl:/home/hadoop/nltkandyaml.mod
+done
+```
 
 This is actually one of my favourite bits, and the one that I've probably reused the most, since now I have a way to "paralellize" any bash script across a Hadoop cluster, so for example recently I had to unzip 100GB of zip files which contained lots of small CSV log files, `cat` them togther, then `gzip` and finally upload to a partitioned s3 bucket, for analysis in Hive; the process ran in less than 2 hours, on a 10-node cluster.
 

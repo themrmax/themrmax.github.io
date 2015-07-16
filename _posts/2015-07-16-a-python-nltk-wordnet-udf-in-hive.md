@@ -48,8 +48,8 @@ Setting up the secondary nodes
 The main challenge in getting it to run was getting the the Python script to find the NLTK Wordnet data files when it ran on the secondary nodes.  Each node on the EMR comes preinstalled with a vanilla Python 2.7 installation, and I can send libraries with the UDF using the `zipimport` method, but any more involved set-up tasks aren't supported by the HIVE TRANSORM API (for example the way you can pass multiple `-file` arguments to `hadoop-streaming.jar`). Initially I tried to make the script download the files with `nltk.download`, but couldn't get this to work, I think due to to it echoing logging lines to stdout, which were getting picked up by Hive.
 
 In the end, I wrote a Bash script to download the files from S3 and then `scp` them to all of the Secondary nodes, and them unzip them over `ssh`. A couple notes about the script:
- - the line `-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no` is a [trick I found on Linux Commando][2] to suppress the SSH host key checking promt
-  - the script downloads my SSH key from s3 which isn't stored anywhere on the Primary node as far as I know ... not sure if this is best-practice security-wise?!
+ - the line `-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no` is a [trick I found on Linux Commando][2] to suppress the SSH host key checking prompt
+ - the script downloads my SSH key from s3 which isn't stored anywhere on the Primary node as far as I know ... not sure if this is best-practice security-wise?!
 
 ```bash
 aws s3 cp s3://max-emr/scripts/wordnet.zip ./wordnet.zip

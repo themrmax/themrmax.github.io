@@ -17,65 +17,59 @@ So: how can I deploy my scraper to run every night, without burning up my 750 ho
 
 Now the data pipeline defininition: it's in the form of a JSON that tells AWS what setup you're going to use for your scheduled task, mine's really simple, it just tells AWS to spin up an t2.micro, run the script.
 
-{
-  "objects": [
     {
-      "period": "1 days",
-      "name": "Every 1 day",
-      "id": "DefaultSchedule",
-      "type": "Schedule",
-      "startAt": "FIRST_ACTIVATION_DATE_TIME"
-    },
-    {
-      "schedule": {
-        "ref": "DefaultSchedule"
-      },
-      "scriptUri": "s3://scripts/iwishidknown.sh",
-      "name": "DefaultActivity1",
-      "id": "ActivityId_qyoFQ",
-      "runsOn": {
-        "ref": "ResourceId_KlGSk"
-      },
-      "type": "ShellCommandActivity"
-    },
-    {
-      "schedule": {
-        "ref": "DefaultSchedule"
-      },
-      "instanceType": "t2.micro",
-      "name": "DefaultResource1",
-      "id": "ResourceId_KlGSk",
-      "type": "Ec2Resource",
-      "terminateAfter": "30 Minutes"
-    },
-    {
-      "failureAndRerunMode": "CASCADE",
-      "schedule": {
-        "ref": "DefaultSchedule"
-      },
-      "resourceRole": "DataPipelineDefaultResourceRole",
-      "role": "DataPipelineDefaultRole",
-      "pipelineLogUri": "s3://iwishidknown-log/",
-      "scheduleType": "cron",
-      "name": "Default",
-      "id": "Default"
+      "objects": [
+        {
+          "period": "1 days",
+          "name": "Every 1 day",
+          "id": "DefaultSchedule",
+          "type": "Schedule",
+          "startAt": "FIRST_ACTIVATION_DATE_TIME"
+        },
+        {
+          "schedule": {
+            "ref": "DefaultSchedule"
+          },
+          "scriptUri": "s3://scripts/iwishidknown.sh",
+          "name": "DefaultActivity1",
+          "id": "ActivityId_qyoFQ",
+          "runsOn": {
+            "ref": "ResourceId_KlGSk"
+          },
+          "type": "ShellCommandActivity"
+        },
+        {
+          "schedule": {
+            "ref": "DefaultSchedule"
+          },
+          "instanceType": "t2.micro",
+          "name": "DefaultResource1",
+          "id": "ResourceId_KlGSk",
+          "type": "Ec2Resource",
+          "terminateAfter": "30 Minutes"
+        },
+        {
+          "failureAndRerunMode": "CASCADE",
+          "schedule": {
+            "ref": "DefaultSchedule"
+          },
+          "resourceRole": "DataPipelineDefaultResourceRole",
+          "role": "DataPipelineDefaultRole",
+          "pipelineLogUri": "s3://iwishidknown-log/",
+          "scheduleType": "cron",
+          "name": "Default",
+          "id": "Default"
+        }
+      ],
+      "parameters": []
     }
-  ],
-  "parameters": []
-}
 
 
 
 Finally the deployment script, which uploads the script from Github to S3, and provisions the data pipeline. To run the deployment, you'll need to have `awscli` installed; I `brew install`'ed it, since I'm on my Macbook at home.
 
-wget https://raw.githubusercontent.com/themrmax/iwishidknown/master/iwishidknown.sh
-aws s3 mb s3://iwishidknown-log
-aws s3 mb s3://iwishidknown
-aws s3 cp iwishidknown.s3 s3://iwishidknown/iwishidknown.sh
-aws datapipeline
-
-
-
-
-
-
+    wget https://raw.githubusercontent.com/themrmax/iwishidknown/master/iwishidknown.sh
+    aws s3 mb s3://iwishidknown-log
+    aws s3 mb s3://iwishidknown
+    aws s3 cp iwishidknown.sh s3://iwishidknown/iwishidknown.sh
+    aws datapipeline create-pipeline --name iwishidknown --unique-id iwishidknown --region ap-southeast-2b

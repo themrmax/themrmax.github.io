@@ -72,6 +72,7 @@ Now the Data Pipeline defininition: it's in the form of a JSON that tells AWS wh
 
 
 Finally the deployment script, which uploads the script from Github to S3, and provisions the data pipeline. Notice that you have to do this in two steps; first create the pipeline and save the id, then set the pipeline definition. To run the deployment:
+
  * You'll need to have `awscli` installed; (I `brew install`'ed it, since I'm on a Macbook.)
  * Go to the "IAM" tab of the AWS console, and create a user, and give it the the "AdministratorAccess" managed policy.
  * Run `aws config` in your terminal with the access and secret keys that it gives you.

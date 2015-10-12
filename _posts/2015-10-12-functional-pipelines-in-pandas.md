@@ -30,6 +30,13 @@ Nicer hey? One think that I've been noticing as I've been following this new sty
 
 **Where to next?** Next step on my functional journey is to learn how to write unit tests for my Pandas code ... and I don't think that the above will make this any easier. [Is there a way to `apply` a function to one column of a dataframe while leaving the other columns fixed?][2]
 
+**Update** After being introduced to the `assign` operator (newly introduced into Pandas 0.16.0), this is the way to "forward pipe" arbitrary functions. For example if you wanted to successively apply a series of functions to a column `A` the syntax would be:
+
+```python
+df.assign(A = lambda x: f1(x.A))
+  .assign(A = lambda x: f2(x.A))
+  .assign(A = lambda x: f3(x.A))
+```
 
 [1]: http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming
 [2]:http://stackoverflow.com/questions/33074132/is-there-a-way-to-apply-a-function-to-one-column-of-a-dataframe-while-leaving?noredirect=1#comment53965810_33074132

@@ -30,7 +30,6 @@ Nicer hey? One think that I've been noticing as I've been following this new sty
 
 **Where to next?** Next step on my functional journey is to learn how to write unit tests for my Pandas code ... and I don't think that the above will make this any easier. [Is there a way to `apply` a function to one column of a dataframe while leaving the other columns fixed?][2]
 
-    df.
 
 [1]: http://maryrosecook.com/blog/post/a-practical-introduction-to-functional-programming
 [2]:http://stackoverflow.com/questions/33074132/is-there-a-way-to-apply-a-function-to-one-column-of-a-dataframe-while-leaving?noredirect=1#comment53965810_33074132

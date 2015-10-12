@@ -1,5 +1,5 @@
 ---
-title: Function programming in Pandas
+title: Functional pipelines in Pandas
 layout: post
 ---
 At work everyone's starting to catch the functional programming bug (starting with F#, but now with people trying out Clojure and Scala) and I don't want to be left behind. Well of course Python isn't the best choice for functional prgramming (no tail-call recursion etc.) and I'm starting to play with Clojure (with Flambo for Spark), but in the mean time I've been wanting to try and wrap my head around the "no side effects" concept of functional programming in my existing Pandas code.

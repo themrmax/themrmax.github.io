@@ -6,7 +6,7 @@ A friend from uni is just finishing his PhD and got in touch with me asking for 
 
 Hey A.
 
-Good to hear from you and congrats on finishing the PhD ;) Definitely happy to give you my advice, it's actually a nice chance for met to reflect on the last couple of years.
+Good to hear from you and congrats on finishing the PhD ;) Definitely happy to give you my advice.
 
 The biggest difference between academia and industry of course is the salary (you probably knew this already). In terms of bureaucracy/actual work, I would say that you're probably better off in the private sector -- someone told me once that the corporate culture in universities lags about 10 years behind the mainstream of management theory, and the corporate world has recently come to terms with the necessity of letting people do their work without micromanaging. (And there's no grant writing!)
 

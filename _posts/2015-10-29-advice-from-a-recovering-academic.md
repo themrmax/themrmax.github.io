@@ -28,7 +28,7 @@ All the best with your job hunt, and let me know how you go!
 Off the top of my head, here's a "big data" project you could do with the Wikipedia dataset that is similar to something you might do in a job. Imagine that the Wikimedia foundation has asked you to build a model to predict whether a post will be marked with a `{{cleanup-rewrite}}` template, so that it can be forwarded to a review queue. 
 
   * Load your data into Hadoop and count the number of `{{cleanup-rewrite}}` tags by category
-  * Choose a category you're interested in, and prepare a dataset of the format `post_id | cleanup_indicator | post_text`
+  * Choose a category you're interested in, and prepare a dataset of the format `cleanup_indicator | post_text`
   * Using scikit-learn, vectorise the dataset using `PCA` and train a `GradientBoostingClassifier`.
   * Evaluate your model using 10-fold cross validation. What is your `roc_auc`? What are the precisions and recalls at different cutoffs? 
   * Use bootstrap sampling to compute confidence intervals on your model's probability predictions.

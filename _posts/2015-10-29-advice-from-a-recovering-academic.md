@@ -34,7 +34,7 @@ Off the top of my head, here's a "big data" project you could do with the Wikipe
   * Use bootstrap sampling to compute confidence intervals on your model's probability predictions.
   * Think about the business implications of your model. If Wikipedia were to automatically reject the bottom 10% of posts, how many false positives would be included in this decile? Do you think this would be acceptable?
   * How well does your model perform on another related subclassification? An unrelated subclassification? A random sample of articles?
-  * Building the model is only half of the work, you also need to deploy it to be used in production. Write a REST API using Flask, which accepts a JSON POST request of the format `{"post_text": "a post"}` and returns `{"score": 0.7}`.
+  * Building the model is only half of the work, you also need to deploy it to be used in production. Write a REST API using Flask, which accepts a JSON POST request of the format `{"post_text": string}` and returns `{"score": float}`.
 
 [1]:http://www.executivestyle.com.au/australian-office-design-failing-in-so-many-ways-gjlt9o?utm_source=FD&utm_medium=rainbow&utm_campaign=sickoffices
 [2]:https://github.com/NICTA/course

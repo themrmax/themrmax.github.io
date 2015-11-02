@@ -2,7 +2,7 @@
 title: Advice from a recovering academic
 layout: post
 ---
-A friend from uni is just finishing his PhD and got in touch with me asking for advice about finding a non-academic job. I really enjoyed the chance to reflect on my past couple of years, and I thought I might share my letter to him in case it's useful to other people.
+A friend from uni is just finishing his PhD and got in touch with me asking for advice about finding a non-academic job, and the difference between academia and industry. I really enjoyed the chance to reflect on my past couple of years, and I thought I might share my advice to him in case it's useful to other people.
 
 Hey A.
 
@@ -33,6 +33,9 @@ OK so this one's been tough for me, and I suspect is not a unique experience amo
 
 When I first tried to use Git, the first thing I needed to know was "when do I do a commit". The standard answer is "when your program works" (aka "don't break the build"), but the problem was that I **never** had a "working" program, all I had was a text file containing various undocumented snippets of functionality. Basically, pretty much all the academic code I wrote, I never ran from the command line, and instead I executed by copy-pasting from a text editor into an IPython terminal. (I know at least one CS PhD who had the same habit in R.) Sure the files ended in `.py` but that was mostly to make syntax highlighting work properly in my text editor. Maybe I'd wrap things up in functions every now and then, but I never bothered how to use command line arguments or anything like that.
 
+So it's been a big thing for me to adjust my workflow to be compatible with the modern way of doing things, but I'm happy to say things are turning around, and I'm now stashing and pushing like all the other kids. (I made my first pull request the other week!) It's definately worth it, I'm feeling much more comfortable about my code and it's way easier and more fun to collaborate too.
+
+TDD has been a bit slower for me to pick up, since for the data-pipeline type tasks I've been working on lately, unit testing in a strict sence sort of doesn't quite make sense. However I have started writing functional tests (mostly as bash scripts) which again has forced me to learn to paramaterise my Hive and Hadoop-streaming queries and run things from the command line rather than copy-pasting into a shell. (I want to write another post about this.) This is still a big improvement for me. Also for my new projects in Clojure and Haskell, I'm doing things the right way from the start, so everything has unit tests in there. Unit testing in Pandas is another thing I want to have a go at, although it's not quite clear to me where to start.
 
 ##In conclusion
 

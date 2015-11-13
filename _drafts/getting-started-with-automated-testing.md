@@ -5,7 +5,7 @@ layout: post
 
 This is a bit of a personal post, since this has actually forced me to look at some things about myself that I don't like to look at. I hope that it will resonate with someone who's facing similar challenges.
 
-So someone asks for a change. Devs estimate it will take 3 months to make the change. Nonsense, I can do it in a few hours ... after all  I'm a Data Science Unicorn ... 6 months later, "can you add in another feature"? Suddenly it's not so easy any more ... how did I do it again? The software that took 3 hours to build, suddenly takes 3 weeks to change (not exaggerating here)
+So someone asks for a change. Devs estimate it will take 3 months to make the change. Nonsense, I can do it in a few hours ... after all  I'm a Data Science Unicorn ... 6 months later, "can you add in another feature"? Suddenly it's not so easy any more ... how did I do it again? The hack that took 3 hours to build, suddenly takes 3 weeks to update. (not exaggerating here)
 
 I've been wanting to get started with unit testing for a while, and am especially motivated since reading [Sam Savages recent LinkedIn article about the need for modernising analytics development workflows][1]. Our Data services team has recently stared automated testing (mostly functional testing from what I'm told, as unit tests can be less useful for Data Pipelines). But the barrier to entry has always been too high for me, learning a bunch of new tools etc. So I wanted to see if I could get stared just using some simple shell scripts.
 

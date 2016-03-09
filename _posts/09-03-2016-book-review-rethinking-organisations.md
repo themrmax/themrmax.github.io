@@ -2,6 +2,7 @@
 title: Book Review: Frederick Laloux, Rethinking Orginsations
 layout: post
 ---
+
 Ever since I was a teeager, and all through my university years, I knew that I didn't want to end up like my parents working at a 9-to-5 job punching my timecard like a schmo and being bossed around by some dumb boss. My mum brought me up as a communist, so I knew that it was "because of Capitalism" pretty much all jobs are soulless and dehumanised (I still believe this). But growing up in the neo-liberalism of the 90s and 2000s, I had no sense of imagination that things could ever be any different. I read David Graeber's books a few years ago and got a little interested in Anarchism as an alternative way of working in teams. But the idea of the endless meetings and consensus processes sounded dreadful and was a big turnoff.
 
 

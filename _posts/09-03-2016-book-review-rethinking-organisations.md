@@ -1,5 +1,5 @@
 ---
-title: Book Review: Frederick Laloux, Rethinking Orginsations
+title: Book Review, Frederick Laloux, Rethinking Orginsations
 layout: post
 ---
 

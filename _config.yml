@@ -2,8 +2,7 @@ name: The Max
 description: Data Science (and maybe some other stuff)
 meta_description: "Max Flander Data Science (and maybe some other stuff)"
 
-markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 logo: true
 paginate: 15
 baseurl: /
